@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"errors"
 	"meli-product-api/internal/application/queries"
 	"meli-product-api/internal/application/usecases"
 	"meli-product-api/internal/infrastructure/config"
+	"meli-product-api/internal/infrastructure/repository"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -53,8 +55,12 @@ func (h *ProductHandler) GetProductByID(c *fiber.Ctx) error {
 
 	product, err := h.GetByIDQuery.Execute(id)
 	if err != nil {
-		config.Logger.Printf("Producto no encontrado: %v", err)
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Producto no encontrado"})
+		if errors.Is(err, repository.ErrProductNotFound) {
+			config.Logger.Printf("Producto no encontrado: %v", err)
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Producto no encontrado"})
+		}
+		config.Logger.Printf("Error al buscar producto: %v", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Error interno"})
 	}
 	config.Logger.Printf("Producto encontrado: %v", product)
 	return c.JSON(product)

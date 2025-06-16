@@ -2,6 +2,7 @@ package repository_test
 
 import (
 	"encoding/json"
+	"errors"
 	"meli-product-api/internal/domain/model"
 	"meli-product-api/internal/infrastructure/repository"
 	"os"
@@ -63,7 +64,7 @@ func TestGetByID_NotFound(t *testing.T) {
 
 	assert.Nil(t, result)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "no encontrado")
+	assert.True(t, errors.Is(err, repository.ErrProductNotFound))
 }
 
 func TestGetByID_FailsIfGetAllFails(t *testing.T) {
@@ -89,5 +90,5 @@ func TestGetByID_EmptyList(t *testing.T) {
 
 	assert.Nil(t, result)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "no encontrado")
+	assert.True(t, errors.Is(err, repository.ErrProductNotFound))
 }

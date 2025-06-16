@@ -2,7 +2,6 @@ package tests
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -12,6 +11,7 @@ import (
 	"meli-product-api/internal/domain/model"
 	"meli-product-api/internal/infrastructure/config"
 	"meli-product-api/internal/infrastructure/handler"
+	"meli-product-api/internal/infrastructure/repository"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
@@ -33,7 +33,7 @@ func (r *testRepo) GetByID(id string) (*model.Product, error) {
 	if id == "100" {
 		return &model.Product{ID: "100", Title: "Producto Test"}, nil
 	}
-	return nil, errors.New("product not found")
+	return nil, repository.ErrProductNotFound
 }
 
 func TestGetAllProductsRoute(t *testing.T) {

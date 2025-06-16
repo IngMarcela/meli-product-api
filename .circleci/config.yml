@@ -14,12 +14,20 @@ jobs:
       - run: go mod tidy
       - run: go test -coverprofile=coverage.out ./...
       - run: |
+          echo "\n📊 Analizando cobertura de tests..."
           COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
           if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-            echo "Coverage is below 80% (current: $COVERAGE%)"
+            echo "\n❌ La cobertura de tests es menor al 80%"
+            echo "📈 Cobertura actual: ${COVERAGE}%"
+            echo "🎯 Cobertura requerida: 80%"
+            echo "\n💡 Sugerencias:"
+            echo "  - Agrega más tests unitarios"
+            - Revisa los archivos sin cobertura
             exit 1
           fi
-          echo "Coverage is good: $COVERAGE%"
+          echo "\n✅ Cobertura de tests: ${COVERAGE}%"
+          echo "🎯 Cobertura requerida: 80%"
+          echo "\n✨ ¡Excelente trabajo! La cobertura de tests es adecuada."
 
 workflows:
   test:

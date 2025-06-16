@@ -1,8 +1,8 @@
 package queries
 
 import (
-	"meli-product-service/internal/domain/model"
-	"meli-product-service/internal/domain/ports"
+	"meli-product-api/internal/domain/model"
+	"meli-product-api/internal/domain/ports"
 )
 
 // GetAllProductsQuery implementa el puerto ProductRepository

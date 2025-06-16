@@ -3,8 +3,8 @@ package usecases
 import (
 	"strings"
 
-	"meli-product-service/internal/domain/model"
-	"meli-product-service/internal/domain/ports"
+	"meli-product-api/internal/domain/model"
+	"meli-product-api/internal/domain/ports"
 )
 
 type SearchProductsUseCase struct {

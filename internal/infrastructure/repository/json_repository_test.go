@@ -2,8 +2,8 @@ package repository_test
 
 import (
 	"encoding/json"
-	"meli-product-service/internal/domain/model"
-	"meli-product-service/internal/infrastructure/repository"
+	"meli-product-api/internal/domain/model"
+	"meli-product-api/internal/infrastructure/repository"
 	"os"
 	"testing"
 

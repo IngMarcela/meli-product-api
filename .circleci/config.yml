@@ -12,7 +12,14 @@ jobs:
     steps:
       - checkout
       - run: go mod tidy
-      - run: go test ./...
+      - run: go test -coverprofile=coverage.out ./...
+      - run: |
+          COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "Coverage is below 80% (current: $COVERAGE%)"
+            exit 1
+          fi
+          echo "Coverage is good: $COVERAGE%"
 
 workflows:
   test:

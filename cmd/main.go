@@ -6,12 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
-	"meli-product-service/internal/infrastructure/config"
-	"meli-product-service/internal/infrastructure/handler"
-	"meli-product-service/internal/infrastructure/repository"
+	"meli-product-api/internal/infrastructure/config"
+	"meli-product-api/internal/infrastructure/handler"
+	"meli-product-api/internal/infrastructure/repository"
 
-	"meli-product-service/internal/application/queries"
-	"meli-product-service/internal/application/usecases"
+	"meli-product-api/internal/application/queries"
+	"meli-product-api/internal/application/usecases"
 )
 
 func main() {

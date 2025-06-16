@@ -1,4 +1,4 @@
-# 🛠️ meli-product-service
+# 🛠️ meli-product-api
 
 Backend del detalle de producto inspirado en Mercado Libre, construido con Go utilizando arquitectura hexagonal.
 
@@ -17,8 +17,8 @@ Backend del detalle de producto inspirado en Mercado Libre, construido con Go ut
 1. Clona el repositorio:
 
 ```bash
-git clone https://github.com/tu-usuario/meli-product-service.git
-cd meli-product-service
+git clone https://github.com/IngMarcela/meli-product-api.git
+cd meli-product-api
 ```
 
 2. Descarga las dependencias:
@@ -78,7 +78,7 @@ go tool cover -html=coverage.out
 ## 📂 Estructura del proyecto
 
 ```
-meli-product-service/
+meli-product-api/
 ├── cmd/                     # Punto de entrada (main.go)
 ├── internal/
 │   ├── application/         # Casos de uso y queries

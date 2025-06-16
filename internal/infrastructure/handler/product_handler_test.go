@@ -8,7 +8,8 @@ import (
 	"meli-product-api/internal/application/usecases"
 	"meli-product-api/internal/domain/model"
 	"meli-product-api/internal/infrastructure/config"
-	"meli-product-api/internal/infrastructure/handler"
+       "meli-product-api/internal/infrastructure/handler"
+       "meli-product-api/internal/infrastructure/repository"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
@@ -31,7 +32,7 @@ func (m *mockRepo) GetByID(id string) (*model.Product, error) {
 	if id == "1" {
 		return &model.Product{ID: "1", Title: "Galaxy S24", Description: "Smartphone Samsung"}, nil
 	}
-	return nil, fiber.NewError(fiber.StatusNotFound, "producto con ID "+id+" no encontrado")
+       return nil, repository.ErrProductNotFound
 }
 
 func TestGetProductByID_Success(t *testing.T) {

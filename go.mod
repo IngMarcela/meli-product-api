@@ -3,9 +3,12 @@ module meli-product-api
 go 1.21.3
 
 require (
-	github.com/gofiber/fiber/v2 v2.52.8
-	github.com/stretchr/testify v1.10.0
+       github.com/gofiber/fiber/v2 v2.52.8
+       github.com/stretchr/testify v1.10.0
 )
+
+replace github.com/gofiber/fiber/v2 => ./stubs/github.com/gofiber/fiber/v2
+replace github.com/stretchr/testify => ./stubs/github.com/stretchr/testify
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect

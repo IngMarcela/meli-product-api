@@ -3,7 +3,7 @@ package repository_test
 import (
 	"encoding/json"
 	"meli-product-api/internal/domain/model"
-	"meli-product-api/internal/infrastructure/repository"
+	"meli-product-api/src/infrastructure/repository"
 	"os"
 	"testing"
 

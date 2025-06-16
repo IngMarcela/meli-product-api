@@ -79,15 +79,23 @@ go tool cover -html=coverage.out
 
 ```
 meli-product-api/
-├── cmd/                     # Punto de entrada (main.go)
-├── internal/
-│   ├── application/         # Casos de uso y queries
-│   ├── config/              # Configuración y logger
-│   ├── domain/              # Entidades y puertos
-│   └── infrastructure/      # Handlers HTTP y repositorios
-├── data/products.json       # Fuente de datos local
-├── run.md                   # Instrucciones de ejecución 📄
-└── go.mod                   # Dependencias
+├── main.go                # Punto de entrada
+├── internal/              # Código privado de la aplicación
+│   ├── application/       # Casos de uso y lógica de negocio
+│   ├── domain/           # Entidades y puertos
+│   └── config/           # Configuración y logger
+├── src/                   # Código fuente
+│   └── infrastructure/    # Implementaciones concretas
+│       ├── handler/      # Handlers HTTP
+│       ├── repository/   # Repositorios
+│       └── config/       # Configuración de infraestructura
+├── data/                 # Datos y recursos estáticos
+│   └── products.json
+├── tests/                # Tests
+├── .circleci/            # Configuración de CI/CD
+├── go.mod
+├── go.sum
+└── README.md
 ```
 
 ---

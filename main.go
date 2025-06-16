@@ -6,9 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
-	"meli-product-api/internal/infrastructure/config"
-	"meli-product-api/internal/infrastructure/handler"
-	"meli-product-api/internal/infrastructure/repository"
+	"meli-product-api/src/infrastructure/config"
+	"meli-product-api/src/infrastructure/handler"
+	"meli-product-api/src/infrastructure/repository"
 
 	"meli-product-api/internal/application/queries"
 	"meli-product-api/internal/application/usecases"

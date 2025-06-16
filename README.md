@@ -16,17 +16,20 @@ Este es un servicio backend desarrollado en **Go** que expone una API REST para 
 
 ```bash
 meli-product-api/
-│
-├── cmd/                    # Entry point (main.go)
-├── internal/
-│   ├── application/        # Use cases y lógica de negocio
-│   ├── config/             # Configuración (por ahora mínima)
-│   ├── domain/             # Modelos y contratos (ports)
-│   └── infrastructure/
-│       ├── handler/        # HTTP handlers (adaptadores externos)
-│       └── repository/     # Adaptadores de persistencia (archivo JSON)
-├── test/                   # Pruebas externas (integration-like)
-├── products.json           # "Base de datos" local
+├── main.go                # Punto de entrada
+├── internal/              # Código privado de la aplicación
+│   ├── application/       # Casos de uso y lógica de negocio
+│   ├── domain/           # Entidades y puertos
+│   └── config/           # Configuración y logger
+├── src/                   # Código fuente
+│   └── infrastructure/    # Implementaciones concretas
+│       ├── handler/      # Handlers HTTP
+│       ├── repository/   # Repositorios
+│       └── config/       # Configuración de infraestructura
+├── data/                 # Datos y recursos estáticos
+│   └── products.json
+├── tests/                # Tests
+├── .circleci/            # Configuración de CI/CD
 ├── go.mod
 ├── go.sum
 └── README.md

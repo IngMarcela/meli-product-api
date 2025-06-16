@@ -10,8 +10,8 @@ import (
 	"meli-product-api/internal/application/queries"
 	"meli-product-api/internal/application/usecases"
 	"meli-product-api/internal/domain/model"
-	"meli-product-api/internal/infrastructure/config"
-	"meli-product-api/internal/infrastructure/handler"
+	"meli-product-api/src/infrastructure/config"
+	"meli-product-api/src/infrastructure/handler"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"

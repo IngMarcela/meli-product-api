@@ -3,7 +3,7 @@ package handler
 import (
 	"meli-product-api/internal/application/queries"
 	"meli-product-api/internal/application/usecases"
-	"meli-product-api/internal/infrastructure/config"
+	"meli-product-api/src/infrastructure/config"
 
 	"github.com/gofiber/fiber/v2"
 )

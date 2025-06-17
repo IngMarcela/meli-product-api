@@ -3,15 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/gofiber/fiber/v2"
+	"meli-product-api/infrastructure/config"
+
 	"github.com/gofiber/fiber/v2/middleware/cors"
-
-	"meli-product-api/src/infrastructure/config"
-	"meli-product-api/src/infrastructure/handler"
-	"meli-product-api/src/infrastructure/repository"
-
-	"meli-product-api/internal/application/queries"
-	"meli-product-api/internal/application/usecases"
 )
 
 func main() {
@@ -20,16 +14,14 @@ func main() {
 
 	cfg := config.LoadConfig()
 
-	app := fiber.New()
+	// Configurar la aplicación
+	app, err := config.SetupApplication(cfg)
+	if err != nil {
+		log.Fatalf("Error configurando la aplicación: %v", err)
+	}
+
+	// Middleware
 	app.Use(cors.New())
-
-	productRepo := repository.NewJSONProductRepository(cfg.ProductFile)
-
-	getAll := queries.NewGetAllProductsQuery(productRepo)
-	getByID := queries.NewGetProductByIDQuery(productRepo)
-	search := usecases.NewSearchProductsUseCase(productRepo)
-
-	handler.RegisterProductRoutes(app, getAll, getByID, search)
 
 	log.Printf("🚀 Servidor corriendo en http://localhost:%s", cfg.Port)
 	if err := app.Listen(":" + cfg.Port); err != nil {

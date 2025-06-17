@@ -5,20 +5,6 @@ import (
 	"meli-product-api/internal/domain/ports"
 )
 
-// GetAllProductsQuery implementa el puerto ProductRepository
-type GetAllProductsQuery struct {
-	repo ports.ProductRepository
-}
-
-// NewGetAllProductsQuery crea una nueva instancia de GetAllProductsQuery
-func NewGetAllProductsQuery(repo ports.ProductRepository) *GetAllProductsQuery {
-	return &GetAllProductsQuery{repo: repo}
-}
-
-func (q *GetAllProductsQuery) Execute() ([]model.Product, error) {
-	return q.repo.GetAll()
-}
-
 // GetProductByIDQuery implementa el puerto ProductRepository
 type GetProductByIDQuery struct {
 	repo ports.ProductRepository

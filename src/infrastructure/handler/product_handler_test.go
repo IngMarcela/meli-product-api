@@ -1,100 +1,92 @@
 package handler_test
 
 import (
+	"encoding/json"
+	"errors"
+	"log"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"meli-product-api/internal/application/queries"
-	"meli-product-api/internal/application/usecases"
 	"meli-product-api/internal/domain/model"
-	"meli-product-api/src/infrastructure/config"
 	"meli-product-api/src/infrastructure/handler"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
+var testLogger *log.Logger
+
 func init() {
-	config.InitLogger()
+	testLogger = log.New(os.Stdout, "[TEST] ", log.LstdFlags)
 }
 
-type mockRepo struct{}
-
-func (m *mockRepo) GetAll() ([]model.Product, error) {
-	return []model.Product{
-		{ID: "1", Title: "Galaxy S24", Description: "Smartphone Samsung"},
-		{ID: "2", Title: "Poco X5", Description: "Smartphone Xiaomi"},
-	}, nil
+type mockProductService struct {
+	product *model.Product
+	err     error
 }
 
-func (m *mockRepo) GetByID(id string) (*model.Product, error) {
-	if id == "1" {
-		return &model.Product{ID: "1", Title: "Galaxy S24", Description: "Smartphone Samsung"}, nil
-	}
-	return nil, fiber.NewError(fiber.StatusNotFound, "producto con ID "+id+" no encontrado")
+func (m *mockProductService) GetByID(id string) (*model.Product, error) {
+	return m.product, m.err
 }
 
 func TestGetProductByID_Success(t *testing.T) {
+	// Arrange
 	app := fiber.New()
-	mockQuery := queries.NewGetAllProductsQuery(&mockRepo{})
-	mockID := queries.NewGetProductByIDQuery(&mockRepo{})
-	search := usecases.NewSearchProductsUseCase(&mockRepo{})
-	handler.RegisterProductRoutes(app, mockQuery, mockID, search)
+	expectedProduct := &model.Product{ID: "123", Title: "Test Product"}
+	mockService := &mockProductService{product: expectedProduct}
+	query := queries.NewGetProductByIDQuery(mockService)
+	productHandler := handler.NewProductHandler(query, testLogger)
+	app.Get("/products/:id", productHandler.GetProductByID)
 
-	req := httptest.NewRequest("GET", "/products/1", nil)
+	// Act
+	req := httptest.NewRequest("GET", "/products/123", nil)
 	resp, _ := app.Test(req)
 
+	// Assert
 	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
+
+	var response model.Product
+	err := json.NewDecoder(resp.Body).Decode(&response)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedProduct.ID, response.ID)
+	assert.Equal(t, expectedProduct.Title, response.Title)
 }
 
 func TestGetProductByID_NotFound(t *testing.T) {
+	// Arrange
 	app := fiber.New()
-	mockQuery := queries.NewGetAllProductsQuery(&mockRepo{})
-	mockID := queries.NewGetProductByIDQuery(&mockRepo{})
-	search := usecases.NewSearchProductsUseCase(&mockRepo{})
-	handler.RegisterProductRoutes(app, mockQuery, mockID, search)
+	mockService := &mockProductService{err: errors.New("not found")}
+	query := queries.NewGetProductByIDQuery(mockService)
+	productHandler := handler.NewProductHandler(query, testLogger)
+	app.Get("/products/:id", productHandler.GetProductByID)
 
+	// Act
 	req := httptest.NewRequest("GET", "/products/999", nil)
 	resp, _ := app.Test(req)
 
+	// Assert
 	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)
+
+	var response map[string]string
+	err := json.NewDecoder(resp.Body).Decode(&response)
+	assert.NoError(t, err)
+	assert.Equal(t, "Producto no encontrado", response["error"])
 }
 
-func TestSearchProducts_Success(t *testing.T) {
+func TestGetProductByID_EmptyID(t *testing.T) {
+	// Arrange
 	app := fiber.New()
-	mockQuery := queries.NewGetAllProductsQuery(&mockRepo{})
-	mockID := queries.NewGetProductByIDQuery(&mockRepo{})
-	search := usecases.NewSearchProductsUseCase(&mockRepo{})
-	handler.RegisterProductRoutes(app, mockQuery, mockID, search)
+	mockService := &mockProductService{}
+	query := queries.NewGetProductByIDQuery(mockService)
+	productHandler := handler.NewProductHandler(query, testLogger)
+	app.Get("/products/:id", productHandler.GetProductByID)
 
-	req := httptest.NewRequest("GET", "/products/search?q=galaxy", nil)
+	// Act
+	req := httptest.NewRequest("GET", "/products/", nil)
 	resp, _ := app.Test(req)
 
-	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
-}
-
-func TestSearchProducts_EmptyQuery(t *testing.T) {
-	app := fiber.New()
-	mockQuery := queries.NewGetAllProductsQuery(&mockRepo{})
-	mockID := queries.NewGetProductByIDQuery(&mockRepo{})
-	search := usecases.NewSearchProductsUseCase(&mockRepo{})
-	handler.RegisterProductRoutes(app, mockQuery, mockID, search)
-
-	req := httptest.NewRequest("GET", "/products/search", nil)
-	resp, _ := app.Test(req)
-
-	assert.Equal(t, fiber.StatusBadRequest, resp.StatusCode)
-}
-
-func TestGetAllProducts_Success(t *testing.T) {
-	app := fiber.New()
-	mockQuery := queries.NewGetAllProductsQuery(&mockRepo{})
-	mockID := queries.NewGetProductByIDQuery(&mockRepo{})
-	search := usecases.NewSearchProductsUseCase(&mockRepo{})
-	handler.RegisterProductRoutes(app, mockQuery, mockID, search)
-
-	req := httptest.NewRequest("GET", "/products", nil)
-	resp, _ := app.Test(req)
-
-	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
+	// Assert
+	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)
 }

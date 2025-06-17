@@ -9,45 +9,45 @@ import (
 	"meli-product-api/internal/domain/ports"
 )
 
-// jsonProductRepository implementa el puerto ProductRepository
 type jsonProductRepository struct {
-	filePath string
+	products map[string]model.Product
 }
 
-// NewJSONProductRepository crea una nueva instancia de jsonProductRepository
-func NewJSONProductRepository(path string) ports.ProductRepository {
-	return &jsonProductRepository{
-		filePath: path,
-	}
-}
-
-// GetAll obtiene todos los productos del archivo JSON
-func (r *jsonProductRepository) GetAll() ([]model.Product, error) {
-	data, err := os.ReadFile(r.filePath)
+// NewJSONProductRepository carga el JSON una vez al iniciar y construye un mapa para acceso eficiente por ID
+func NewJSONProductRepository(path string) (ports.ProductRepository, error) {
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("error leyendo archivo JSON: %w", err)
 	}
 
-	var products []model.Product
-	if err := json.Unmarshal(data, &products); err != nil {
+	var productList []model.Product
+	if err := json.Unmarshal(data, &productList); err != nil {
 		return nil, fmt.Errorf("error parseando JSON: %w", err)
 	}
 
-	return products, nil
+	productMap := make(map[string]model.Product)
+	for _, p := range productList {
+		productMap[p.ID] = p
+	}
+
+	return &jsonProductRepository{
+		products: productMap,
+	}, nil
 }
 
-// GetByID busca un producto por ID
+// GetAll retorna todos los productos desde el mapa en memoria
+func (r *jsonProductRepository) GetAll() ([]model.Product, error) {
+	productList := make([]model.Product, 0, len(r.products))
+	for _, p := range r.products {
+		productList = append(productList, p)
+	}
+	return productList, nil
+}
+
+// GetByID busca el producto
 func (r *jsonProductRepository) GetByID(id string) (*model.Product, error) {
-	products, err := r.GetAll()
-	if err != nil {
-		return nil, err
+	if p, exists := r.products[id]; exists {
+		return &p, nil
 	}
-
-	for _, p := range products {
-		if p.ID == id {
-			return &p, nil
-		}
-	}
-
 	return nil, fmt.Errorf("producto con ID %s no encontrado", id)
 }

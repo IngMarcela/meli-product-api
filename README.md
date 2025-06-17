@@ -38,22 +38,3 @@ meli-product-api/
 ├── go.mod
 ├── go.sum
 └── README.md
-
-meli-product-api/
-├── main.go                # Punto de entrada
-├── internal/              # Código privado de la aplicación
-│   ├── application/       # Casos de uso y lógica de negocio
-│   ├── domain/           # Entidades y puertos
-│   └── config/           # Configuración y logger TODO solo debe existir un punto de cableado
-├── src/                   # Código fuente
-│   └── infrastructure/    # Implementaciones concretas
-│       ├── handler/      # Handlers HTTP
-│       ├── repository/   # Repositorios TODO los repositorios no son de la misma capa que los handlers
-│       └── config/       # Configuración de infraestructura TODO no me suena que este dentro de infra
-├── data/                 # Datos y recursos estáticos
-│   └── products.json
-├── tests/                # Tests
-├── .circleci/            # Configuración de CI/CD
-├── go.mod
-├── go.sum
-└── README.md

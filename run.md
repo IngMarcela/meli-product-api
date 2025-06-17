@@ -34,7 +34,7 @@ go mod tidy
 Ejecutá el proyecto con:
 
 ```bash
-go run cmd/main.go
+go run main.go
 ```
 
 La API quedará corriendo en:
@@ -47,14 +47,8 @@ http://localhost:3000
 
 ## 📚 Endpoints disponibles
 
-### GET /products
-Retorna todos los productos.
-
 ### GET /products/:id
 Retorna un producto por su ID.
-
-### GET /products/search?q=texto
-Busca productos cuyo título o descripción contengan `texto`.
 
 ---
 
@@ -79,20 +73,25 @@ go tool cover -html=coverage.out
 
 ```
 meli-product-api/
-├── main.go                # Punto de entrada
-├── internal/              # Código privado de la aplicación
-│   ├── application/       # Casos de uso y lógica de negocio
-│   ├── domain/           # Entidades y puertos
-│   └── config/           # Configuración y logger
-├── src/                   # Código fuente
-│   └── infrastructure/    # Implementaciones concretas
-│       ├── handler/      # Handlers HTTP
-│       ├── repository/   # Repositorios
-│       └── config/       # Configuración de infraestructura
-├── data/                 # Datos y recursos estáticos
+├── main.go
+├── internal/
+│   ├── application/
+│   │   └── queries/
+│   ├── domain/
+│   │   ├── model/
+│   │   └── ports/
+│   └── config/
+│       └── logger.go
+├── infrastructure/
+│   ├── handler/
+│   ├── repository/
+│   └── config/
+│       ├── routes.go
+│       └── wiring.go
+├── data/
 │   └── products.json
-├── tests/                # Tests
-├── .circleci/            # Configuración de CI/CD
+├── tests/
+├── .circleci/
 ├── go.mod
 ├── go.sum
 └── README.md

@@ -2,12 +2,16 @@ package repository
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
 	"meli-product-api/internal/domain/model"
 	"meli-product-api/internal/domain/ports"
 )
+
+// ErrProductNotFound se devuelve cuando no se encuentra un producto por su ID
+var ErrProductNotFound = errors.New("producto no encontrado")
 
 type jsonProductRepository struct {
 	products map[string]model.Product
@@ -49,5 +53,5 @@ func (r *jsonProductRepository) GetByID(id string) (*model.Product, error) {
 	if p, exists := r.products[id]; exists {
 		return &p, nil
 	}
-	return nil, fmt.Errorf("producto con ID %s no encontrado", id)
+	return nil, fmt.Errorf("%w: %s", ErrProductNotFound, id)
 }

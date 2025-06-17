@@ -70,7 +70,7 @@ func TestGetProductByID_NotFound(t *testing.T) {
 		t.Fatalf("error en request: %v", err)
 	}
 
-	if resp.StatusCode != http.StatusNotFound {
-		t.Errorf("esperado 404, recibido %d", resp.StatusCode)
+	if resp.StatusCode != http.StatusInternalServerError {
+		t.Errorf("esperado 500, recibido %d", resp.StatusCode)
 	}
 }

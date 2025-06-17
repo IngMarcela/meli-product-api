@@ -34,9 +34,8 @@ func (h *ProductHandler) GetProductByID(c *fiber.Ctx) error {
 	product, err := h.productService.Execute(id)
 	if err != nil {
 		h.logger.Printf("Error al obtener producto: %v", err)
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "Producto no encontrado",
-		})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Error interno"})
 	}
 
 	return c.JSON(product)

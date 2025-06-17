@@ -71,12 +71,12 @@ func TestGetProductByID_NotFound(t *testing.T) {
 	resp, _ := app.Test(req)
 
 	// Assert
-	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)
+	assert.Equal(t, fiber.StatusInternalServerError, resp.StatusCode)
 
 	var response map[string]string
 	err := json.NewDecoder(resp.Body).Decode(&response)
 	assert.NoError(t, err)
-	assert.Equal(t, "Producto no encontrado", response["error"])
+	assert.Equal(t, "Error interno", response["error"])
 }
 
 func TestGetProductByID_EmptyID(t *testing.T) {

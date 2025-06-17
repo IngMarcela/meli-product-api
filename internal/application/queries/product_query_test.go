@@ -15,6 +15,10 @@ func (m *mockRepo) GetByID(id string) (*model.Product, error) {
 	return &model.Product{ID: id, Title: "Producto Test"}, nil
 }
 
+func (m *mockRepo) GetAll() ([]model.Product, error) {
+	return nil, nil
+}
+
 func TestGetProductByIDQuery_Execute(t *testing.T) {
 	q := queries.NewGetProductByIDQuery(&mockRepo{})
 

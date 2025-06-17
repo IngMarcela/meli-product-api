@@ -31,6 +31,10 @@ func (m *mockProductService) GetByID(id string) (*model.Product, error) {
 	return m.product, m.err
 }
 
+func (m *mockProductService) GetAll() ([]model.Product, error) {
+	return nil, nil
+}
+
 func TestGetProductByID_Success(t *testing.T) {
 	// Arrange
 	app := fiber.New()

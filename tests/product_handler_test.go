@@ -2,7 +2,6 @@ package tests
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,6 +9,8 @@ import (
 	"meli-product-api/infrastructure/config"
 	"meli-product-api/internal/application/queries"
 	"meli-product-api/internal/domain/model"
+
+	"errors"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,7 +25,11 @@ func (r *testRepo) GetByID(id string) (*model.Product, error) {
 	if id == "100" {
 		return &model.Product{ID: "100", Title: "Producto Test"}, nil
 	}
-	return nil, errors.New("product not found")
+	return nil, errors.New("not found")
+}
+
+func (r *testRepo) GetAll() ([]model.Product, error) {
+	return nil, nil
 }
 
 func TestGetProductByID_Success(t *testing.T) {

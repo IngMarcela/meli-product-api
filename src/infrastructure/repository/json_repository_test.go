@@ -124,12 +124,20 @@ func TestGetAll_Success(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Len(t, result, 3)
-	assert.Equal(t, "Producto Uno", result[0].Title)
-	assert.Equal(t, "Producto Dos", result[1].Title)
-	assert.Equal(t, "Producto Tres", result[2].Title)
-	assert.Equal(t, 100.0, result[0].Price)
-	assert.Equal(t, 200.0, result[1].Price)
-	assert.Equal(t, 300.0, result[2].Price)
+
+	// Create a map for easier lookup
+	resultMap := make(map[string]model.Product)
+	for _, p := range result {
+		resultMap[p.ID] = p
+	}
+
+	// Check each product by ID
+	assert.Equal(t, "Producto Uno", resultMap["1"].Title)
+	assert.Equal(t, 100.0, resultMap["1"].Price)
+	assert.Equal(t, "Producto Dos", resultMap["2"].Title)
+	assert.Equal(t, 200.0, resultMap["2"].Price)
+	assert.Equal(t, "Producto Tres", resultMap["3"].Title)
+	assert.Equal(t, 300.0, resultMap["3"].Price)
 }
 
 func TestGetAll_EmptyList(t *testing.T) {

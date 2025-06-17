@@ -11,22 +11,12 @@ import (
 
 type mockRepo struct{}
 
-func (m *mockRepo) GetAll() ([]model.Product, error) {
-	return []model.Product{{ID: "1", Title: "Producto Test"}}, nil
-}
-
 func (m *mockRepo) GetByID(id string) (*model.Product, error) {
 	return &model.Product{ID: id, Title: "Producto Test"}, nil
 }
 
-func TestGetAllProductsQuery_Execute(t *testing.T) {
-	q := queries.NewGetAllProductsQuery(&mockRepo{})
-
-	result, err := q.Execute()
-
-	assert.NoError(t, err)
-	assert.Len(t, result, 1)
-	assert.Equal(t, "1", result[0].ID)
+func (m *mockRepo) GetAll() ([]model.Product, error) {
+	return nil, nil
 }
 
 func TestGetProductByIDQuery_Execute(t *testing.T) {

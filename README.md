@@ -6,8 +6,7 @@ Este es un servicio backend desarrollado en **Go** que expone una API REST para 
 
 ## 🚀 Funcionalidades
 
-- Listado completo de productos: `GET /products`
-- Consulta de detalle por ID: `GET /products/{id}`
+- Consulta de detalle por ID: `GET /products/{id}` TODO falta generar version a la API
 - Persistencia local en archivo `.json`
 - Arquitectura **hexagonal** (ports & adapters)
 - Cobertura de tests por capa (`application`, `repository`)
@@ -15,18 +14,27 @@ Este es un servicio backend desarrollado en **Go** que expone una API REST para 
 ## 🧱 Estructura del proyecto
 
 ```bash
+
 meli-product-api/
-│
-├── cmd/                    # Entry point (main.go)
+├── main.go
 ├── internal/
-│   ├── application/        # Use cases y lógica de negocio
-│   ├── config/             # Configuración (por ahora mínima)
-│   ├── domain/             # Modelos y contratos (ports)
-│   └── infrastructure/
-│       ├── handler/        # HTTP handlers (adaptadores externos)
-│       └── repository/     # Adaptadores de persistencia (archivo JSON)
-├── test/                   # Pruebas externas (integration-like)
-├── products.json           # "Base de datos" local
+│   ├── application/
+│   │   └── queries/
+│   ├── domain/
+│   │   ├── model/
+│   │   └── ports/
+│   └── config/
+│       └── logger.go
+├── infrastructure/
+│   ├── handler/
+│   ├── repository/
+│   └── config/
+│       ├── routes.go
+│       └── wiring.go
+├── data/
+│   └── products.json
+├── tests/
+├── .circleci/
 ├── go.mod
 ├── go.sum
 └── README.md
